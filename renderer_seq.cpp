@@ -1,3 +1,7 @@
+//
+// Created by thomas on 13/12/2022.
+//
+
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -7,23 +11,11 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include <opencv2/core/utility.hpp>
 
-#define TEST5 5
-#define TEST100 100
-#define TEST200 200
-#define TEST1000 1000
-#define TEST10000 10000
-
-#define MAX_ROWS 500
-#define MAX_COLS 500
-
-#define MAX_CIRCLES 50000
-#define MAX_RADIUS 70
-#define MIN_RADIUS 10
-
-#define ALPHA 0.3
+#include "test.h"
+#include "values.h"
 
 
-int main() {
+int man() {
     std::srand(time(nullptr));
     cv::Mat base(MAX_ROWS, MAX_COLS, CV_8UC4, cv::Scalar(255, 255, 255, 0));
 
@@ -34,7 +26,6 @@ int main() {
         base.copyTo(plane);
         std::cout<<"Piano"<<i+1<<std::endl;
 
-#pragma omp parallel for
         for(int j=0; j<MAX_CIRCLES; j++) {
             int x = std::rand() % MAX_ROWS + 1;
             int y = std::rand() % MAX_COLS + 1;
@@ -43,7 +34,6 @@ int main() {
             cv::Scalar color(std::rand()%255+1, std::rand()%255+1, std::rand()%255+1);
             cv::circle(plane, center, r, color, cv::FILLED, cv::LINE_AA);
         }
-#pragma omp barrier
         cv::addWeighted(plane, ALPHA, base, 1 - ALPHA, 0, base);
     }
 
