@@ -1,11 +1,13 @@
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <chrono>
+#include <omp.h>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <opencv2/core/utility.hpp>
 
-#define TEST10 10
+#define TEST5 5
 #define TEST100 100
 #define TEST200 200
 #define TEST1000 1000
@@ -13,45 +15,43 @@
 
 #define MAX_ROWS 500
 #define MAX_COLS 500
-#define MAX_DEPTH 10
-#define MAX_RADIUS 50
+
+#define MAX_CIRCLES 50000
+#define MAX_RADIUS 70
+#define MIN_RADIUS 10
 
 #define ALPHA 0.3
-#define BLUE cv::Scalar(178, 34, 34)
-#define RED cv::Scalar(30, 144, 255)
-#define YELLOW cv::Scalar(255, 255, 0)
 
 
 int main() {
     std::srand(time(nullptr));
-    cv::Mat matrix(MAX_ROWS, MAX_COLS, CV_8UC3, cv::Scalar(255, 255, 255)); //Declaring a matrix
-    //int sizes[] = {MAX_ROWS, MAX_COLS, MAX_DEPTH};
-    //cv::Mat matrix(3, sizes, CV_8UC3, cv::Scalar(255, 255, 255));
-    cv::Mat overlay;
-    for(int i=0; i<TEST10; i++){
+    cv::Mat base(MAX_ROWS, MAX_COLS, CV_8UC4, cv::Scalar(255, 255, 255, 0));
+
+    double startTime = omp_get_wtime();
+
+    for (int i = 0; i < TEST5; i++) {
+        cv::Mat plane(MAX_ROWS, MAX_COLS, CV_8UC4, cv::Scalar(255, 255, 255, 0));
+        base.copyTo(plane);
+        std::cout<<"Piano"<<i+1<<std::endl;
+
 #pragma omp parallel for
-        for(int j=0; j<TEST10; j++) {
-            int x = rand() % MAX_ROWS + 1;
-            int y = rand() % MAX_COLS + 1;
-            //int z = rand() % MAX_DEPTH + 1;
-            int r = rand() % MAX_RADIUS + 1;
-            cv::Point center(x, y); //Declaring the center point
-            matrix.copyTo(overlay);
-            switch (rand()%3+1) {
-                case 1:
-                    cv::circle(matrix, center, r, BLUE, cv::FILLED, cv::LINE_AA);
-                    break;
-                case 2:
-                    cv::circle(matrix, center, r, RED, cv::FILLED, cv::LINE_AA);
-                    break;
-                case 3:
-                    cv::circle(matrix, center, r, YELLOW, cv::FILLED, cv::LINE_AA);
-                    break;
-            }
+        for(int j=0; j<MAX_CIRCLES; j++) {
+            int x = std::rand() % MAX_ROWS + 1;
+            int y = std::rand() % MAX_COLS + 1;
+            int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
+            cv::Point center(x, y);
+            cv::Scalar color(std::rand()%255+1, std::rand()%255+1, std::rand()%255+1);
+            cv::circle(plane, center, r, color, cv::FILLED, cv::LINE_AA);
         }
-        cv::addWeighted(overlay, ALPHA, matrix, 1 - ALPHA, 0, matrix);
+#pragma omp barrier
+        cv::addWeighted(plane, ALPHA, base, 1 - ALPHA, 0, base);
     }
-    cv::imshow("TEST", matrix);
+
+    double endTime = omp_get_wtime();
+    double time = endTime - startTime;
+    std::cout<<time<<std::endl;
+
+    cv::imshow("TEST", base);
     cv::waitKey(0);
     return 0;
 }
