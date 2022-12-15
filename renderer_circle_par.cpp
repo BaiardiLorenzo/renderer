@@ -10,7 +10,7 @@
 #include "values.h"
 
 
-int maipn() {
+int maindd() {
     std::srand(time(nullptr));
     cv::Mat base(MAX_ROWS, MAX_COLS, CV_8UC4, TRANSPARENT);
 
@@ -20,9 +20,9 @@ int maipn() {
         cv::Mat plane;
         base.copyTo(plane);
         printf("PLANE:%d\n", i + 1);
-#pragma omp parallel default(none) shared(plane)
-#pragma omp for
-        for (int j = 0; j < MAX_CIRCLES; j++) {
+
+#pragma omp parallel for default(none) shared(plane, base)
+        for (int j = 0; j < N_CIRCLES; j++) {
             int x = std::rand() % MAX_ROWS + 1;
             int y = std::rand() % MAX_COLS + 1;
             int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
@@ -30,6 +30,7 @@ int maipn() {
             cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256, 255);
             cv::circle(plane, center, r, color, cv::FILLED, cv::LINE_AA);
         }
+#pragma omp barrier
         cv::addWeighted(plane, ALPHA, base, 1 - ALPHA, 0, base);
     }
 

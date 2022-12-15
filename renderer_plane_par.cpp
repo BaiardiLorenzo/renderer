@@ -22,7 +22,7 @@ int main() {
 #pragma omp parallel for default(none) shared(planes)
     for (int i = 0; i < planes.size(); i++) {
 #pragma omp parallel for default(none) shared(planes, i)
-        for (int j = 0; j < MAX_CIRCLES; j++) {
+        for (int j = 0; j < N_CIRCLES; j++) {
             int x = std::rand() % MAX_ROWS + 1;
             int y = std::rand() % MAX_COLS + 1;
             int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;

@@ -10,7 +10,7 @@
 #include "values.h"
 
 
-int maingh() {
+int mail() {
     std::srand(time(nullptr));
     cv::Mat base(MAX_ROWS, MAX_COLS, CV_8UC4, TRANSPARENT);
 
@@ -20,7 +20,7 @@ int maingh() {
         cv::Mat plane;
         base.copyTo(plane);
         printf("PLANE: %d\n", i + 1);
-        for (int j = 0; j < MAX_CIRCLES; j++) {
+        for (int j = 0; j < N_CIRCLES; j++) {
             int x = std::rand() % MAX_ROWS + 1;
             int y = std::rand() % MAX_COLS + 1;
             int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
