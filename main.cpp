@@ -2,21 +2,40 @@
 #include <ctime>
 #include <cstdlib>
 #include <chrono>
-#include <omp.h>
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <opencv2/core/utility.hpp>
-
 #include "main.h"
+#ifdef _OPENMP
+    #include <omp.h>
+#endif
 
 int main() {
+#ifdef _OPENMP
+    printf("OPENMP - core/threads processor: %d\n", omp_get_num_procs());
+#endif
     std::vector<int> test_planes = {N_PLANES_100, N_PLANES_1000, N_PLANES_5000};
     for (int test: test_planes) {
         //Initialization creation circles for all tests!!
+        generate_circles(N_CIRCLES);
+        //Pass the circles on the functions
         renderer_seq(test, N_CIRCLES);
         renderer_circles_par(test, N_CIRCLES);
         renderer_planes_circles_par(test, N_CIRCLES);
     }
+}
+
+Circle * generate_circles(int nCircle){
+    Circle circles[nCircle];
+    for(int i=0;i<nCircle;i++) {
+        int x = std::rand() % HEIGHT + 1;
+        int y = std::rand() % WIDTH + 1;
+        cv::Point center(x,y);
+        cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256);
+        int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
+        circles[i] = Circle{center, color, r};
+    }
+    return circles;
 }
 
 double renderer_seq(int n_planes, int n_circles) {
