@@ -5,6 +5,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include <opencv2/core/utility.hpp>
+#include <vector>
 #include "main.h"
 #ifdef _OPENMP
     #include <omp.h>
@@ -35,6 +36,7 @@ Circle * generate_circles(int nCircle){
         int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
         circles[i] = Circle{center, color, r};
     }
+    //TO APPLY
     return circles;
 }
 
