@@ -10,7 +10,7 @@ find_package(OpenCV REQUIRED)
 find_package(OpenMP REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(renderer main.h main.cpp)
+add_executable(renderer main.h main.cpp Circle.cpp Circle.h Circle.h)
 
 set(OpenCV_LIBS opencv_core opencv_imgproc opencv_highgui opencv_imgcodecs)
 

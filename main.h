@@ -13,13 +13,9 @@
 #define MIN_RADIUS 10
 #define N_CIRCLES 2000
 
-struct Circle{
-    cv::Point center;
-    cv::Scalar color;
-    int r;
-};
 
-Circle * generate_circles(int);
+
+Circle generate_circles(int);
 
 double renderer_seq(int, int);
 double renderer_circles_par(int, int);

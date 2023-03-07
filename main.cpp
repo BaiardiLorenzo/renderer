@@ -16,9 +16,10 @@ int main() {
     printf("OPENMP - core/threads processor: %d\n", omp_get_num_procs());
 #endif
     std::vector<int> test_planes = {N_PLANES_100, N_PLANES_1000, N_PLANES_5000};
+    Circle circles = generate_circles(N_CIRCLES);
+
     for (int test: test_planes) {
         //Initialization creation circles for all tests!!
-        generate_circles(N_CIRCLES);
         //Pass the circles on the functions
         renderer_seq(test, N_CIRCLES);
         renderer_circles_par(test, N_CIRCLES);
@@ -26,7 +27,7 @@ int main() {
     }
 }
 
-Circle * generate_circles(int nCircle){
+Circle generate_circles(int nCircle){
     Circle circles[nCircle];
     for(int i=0;i<nCircle;i++) {
         int x = std::rand() % HEIGHT + 1;
@@ -36,7 +37,6 @@ Circle * generate_circles(int nCircle){
         int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
         circles[i] = Circle{center, color, r};
     }
-    //TO APPLY
     return circles;
 }
 
