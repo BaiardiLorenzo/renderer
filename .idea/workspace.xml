@@ -20,32 +20,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecbc562d-5960-433d-a995-2ae318a40908" name="Changes" comment="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles">
-      <change afterPath="$PROJECT_DIR$/img/par_circles_50.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/par_planes_circles_50.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/seq_50.bmp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Circle.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Circle.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-52193a0eb6e77620e3b8.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-682f7004c3c0ae74c129.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-03-06T19-14-47-0354.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-renderer-Debug-9c80891d45d8ce15a36c.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.ilk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/par_circles_100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/par_planes_circles_100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/seq_100.png" beforeDir="false" />
+    <list default="true" id="ecbc562d-5960-433d-a995-2ae318a40908" name="Changes" comment="completed project seq e par">
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.h" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +123,7 @@
       <workItem from="1678137141968" duration="216000" />
       <workItem from="1678212494140" duration="1972000" />
       <workItem from="1678473816259" duration="1452000" />
-      <workItem from="1678536676488" duration="9612000" />
+      <workItem from="1678536676488" duration="10505000" />
     </task>
     <task id="LOCAL-00001" summary="add circles">
       <created>1670601146651</created>
@@ -205,7 +181,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678214707218</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="completed project seq e par">
+      <created>1678561432787</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1678561432787</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,6 +217,7 @@
     <MESSAGE value="plane and circles optimization, file test removed, added n_planes inside values.h&#10;check optimization via openmp" />
     <MESSAGE value="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: initialization creation circles for all tests." />
     <MESSAGE value="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles" />
-    <option name="LAST_COMMIT_MESSAGE" value="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles" />
+    <MESSAGE value="completed project seq e par" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed project seq e par" />
   </component>
 </project>

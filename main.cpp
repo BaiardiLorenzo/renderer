@@ -92,7 +92,7 @@ double renderer_par(int nPlanes, int nCircles) {
 
     double time = omp_get_wtime() - start;
     printf("TIME: %f\n", time);
-    cv::imwrite("../img/par" + std::to_string(nPlanes) + ".bmp", result);
+    cv::imwrite("../img/par_" + std::to_string(nPlanes) + ".bmp", result);
     return time;
 }
 
@@ -100,7 +100,7 @@ int main() {
 #ifdef _OPENMP
     printf("Core/Threads: %d\n", omp_get_num_procs());
 #endif
-    std::vector<int> test_planes = {N_PLANES_100, N_PLANES_1000, N_PLANES_5000};
+    std::vector<int> test_planes = {N_PLANES_100, N_PLANES_1000};
 
     for (int test: test_planes) {
         renderer_seq(test, N_CIRCLES);
