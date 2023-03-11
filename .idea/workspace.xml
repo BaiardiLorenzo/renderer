@@ -10,7 +10,9 @@
     <option name="reloaded" value="true" />
   </component>
   <component name="CMakeRunConfigurationManager">
-    <generated />
+    <generated>
+      <config projectName="renderer" targetName="renderer" />
+    </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
@@ -18,7 +20,33 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecbc562d-5960-433d-a995-2ae318a40908" name="Changes" comment="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles" />
+    <list default="true" id="ecbc562d-5960-433d-a995-2ae318a40908" name="Changes" comment="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles">
+      <change afterPath="$PROJECT_DIR$/img/par_circles_50.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/par_planes_circles_50.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/seq_50.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Circle.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Circle.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-52193a0eb6e77620e3b8.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-682f7004c3c0ae74c129.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-03-06T19-14-47-0354.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/target-renderer-Debug-9c80891d45d8ce15a36c.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.ilk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/par_circles_100.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/par_planes_circles_100.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/seq_100.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.h" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,10 +97,14 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="renderer" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="renderer" TARGET_NAME="main.cpp" CONFIG_NAME="renderer">
-      <option name="sourceFile" value="C:\Users\loreb\Documents\CLionProjects\renderer\main.cpp" />
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="renderer" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="renderer" TARGET_NAME="renderer" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="renderer" RUN_TARGET_NAME="renderer">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
   </component>
@@ -110,7 +142,12 @@
       <workItem from="1673811713648" duration="100000" />
       <workItem from="1678130077498" duration="2124000" />
       <workItem from="1678136165029" duration="393000" />
-      <workItem from="1678136573038" duration="1000" />
+      <workItem from="1678136573038" duration="341000" />
+      <workItem from="1678136929206" duration="202000" />
+      <workItem from="1678137141968" duration="216000" />
+      <workItem from="1678212494140" duration="1972000" />
+      <workItem from="1678473816259" duration="1452000" />
+      <workItem from="1678536676488" duration="9612000" />
     </task>
     <task id="LOCAL-00001" summary="add circles">
       <created>1670601146651</created>
@@ -147,7 +184,28 @@
       <option name="project" value="LOCAL" />
       <updated>1678136038558</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles">
+      <created>1678136710490</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1678136710490</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles">
+      <created>1678137344906</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1678137344906</updated>
+    </task>
+    <task id="LOCAL-00008" summary="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles">
+      <created>1678214707218</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1678214707218</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
