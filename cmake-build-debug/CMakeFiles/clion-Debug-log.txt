@@ -1,9 +1,9 @@
 C:\Users\loreb\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\223.8617.54\bin\cmake\win\x64\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/loreb/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/223.8617.54/bin/ninja/win/x64/ninja.exe -G Ninja -S C:\Users\loreb\Documents\CLionProjects\renderer -B C:\Users\loreb\Documents\CLionProjects\renderer\cmake-build-debug
 -- OpenCV ARCH: x64
--- OpenCV RUNTIME: vc15
+-- OpenCV RUNTIME: mingw
 -- OpenCV STATIC: OFF
--- Found OpenCV 4.6.0 in C:/src/opencv/build/x64/vc15/lib
--- You might need to add C:\src\opencv\build\x64\vc15\bin to your PATH to be able to run your applications.
+-- Found OpenCV 4.6.0 in C:/src/opencv/mingw-build/install/x64/mingw/lib
+-- You might need to add C:\src\opencv\mingw-build\install\x64\mingw\bin to your PATH to be able to run your applications.
 -- Configuring done
 -- Generating done
 -- Build files have been written to: C:/Users/loreb/Documents/CLionProjects/renderer/cmake-build-debug

@@ -2,13 +2,16 @@ cmake_minimum_required(VERSION 3.24)
 project(renderer)
 
 set(CMAKE_CXX_STANDARD 23)
-set(ENV{OPENCV_DIR} "C:\\src\\opencv\\build")
+set(OpenCV_DIR "C:\\src\\opencv\\mingw-build\\install")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -fopenmp")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fopenmp")
 
 find_package(OpenCV REQUIRED)
 find_package(OpenMP REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
+
+MATH(EXPR stack_size "16 * 1024 * 1024")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--stack,${stack_size}")
 
 add_executable(renderer main.cpp)
 
