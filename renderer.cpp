@@ -43,6 +43,7 @@ double rendererParallel(Circle circles[], int nPlanes, int nCircles) {
     printf("RENDERER PARALLEL\n");
     cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
     cv::Mat planes[nPlanes];
+#pragma omp parallel for default(none) shared(planes, nPlanes)
     for (int i = 0; i < nPlanes; i++)
         planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
 
