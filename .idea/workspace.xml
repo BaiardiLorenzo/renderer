@@ -20,15 +20,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ecbc562d-5960-433d-a995-2ae318a40908" name="Changes" comment="completed project seq e par">
-      <change afterPath="$PROJECT_DIR$/img/par_12.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/par_120.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/seq_12.bmp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/img/seq_120.bmp" afterDir="false" />
+    <list default="true" id="ecbc562d-5960-433d-a995-2ae318a40908" name="Changes" comment="completed project seq e par&#10;TODO: resolve white background">
+      <change afterPath="$PROJECT_DIR$/img/par_6.bmp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/img/seq_6.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/cache-v2-0613d5459bad4d486640.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-51ced26850160acbf575.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_deps" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/.ninja_log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
@@ -37,16 +32,9 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_CXX.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CMakeRCCompiler.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CMakeRCCompiler.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/CMakeCCompilerId.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/CMakeCCompilerId.obj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdCXX/CMakeCXXCompilerId.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdCXX/CMakeCXXCompilerId.obj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/ompver_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/ompver_C.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/ompver_CXX.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/FindOpenMP/ompver_CXX.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ShowIncludes/foo.h" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ShowIncludes/main.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/ShowIncludes/main.obj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
@@ -54,10 +42,8 @@
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.ilk" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.ilk" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/renderer.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/renderer.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/par100.bmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/seq_100.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/par_120.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/img/par_120.bmp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/seq_120.bmp" beforeDir="false" afterPath="$PROJECT_DIR$/img/seq_120.bmp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -104,17 +90,12 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CPPToolchains&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;,
     &quot;structure.view.defaults.are.configured&quot;: &quot;true&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RunManager" selected="CMake Application.renderer">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="renderer" type="CMakeListConfigurationType" factoryName="CMakeListConfigurationFactory" temporary="true">
       <method v="2" />
     </configuration>
@@ -175,7 +156,11 @@
       <workItem from="1678536676488" duration="10585000" />
       <workItem from="1678958508476" duration="18868000" />
       <workItem from="1678982143200" duration="673000" />
-      <workItem from="1679005922425" duration="3803000" />
+      <workItem from="1679005922425" duration="4501000" />
+      <workItem from="1679070549671" duration="33000" />
+      <workItem from="1679685559394" duration="3000" />
+      <workItem from="1679688991575" duration="229000" />
+      <workItem from="1679755520925" duration="1000" />
     </task>
     <task id="LOCAL-00001" summary="add circles">
       <created>1670601146651</created>
@@ -247,7 +232,14 @@
       <option name="project" value="LOCAL" />
       <updated>1678564054413</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="completed project seq e par&#10;TODO: resolve white background">
+      <created>1679009787081</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1679009787081</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,14 +269,15 @@
     <MESSAGE value="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: initialization creation circles for all tests." />
     <MESSAGE value="add image folder for test visualization. &#10;reformat project files.&#10;refactor names.&#10;initialization test.&#10;TODO: finish the creation of the circles" />
     <MESSAGE value="completed project seq e par" />
-    <option name="LAST_COMMIT_MESSAGE" value="completed project seq e par" />
+    <MESSAGE value="completed project seq e par&#10;TODO: resolve white background" />
+    <option name="LAST_COMMIT_MESSAGE" value="completed project seq e par&#10;TODO: resolve white background" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>101</line>
+          <line>106</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>

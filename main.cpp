@@ -14,7 +14,7 @@
 #define MAX_RADIUS 70
 #define MIN_RADIUS 10
 
-#define N_PLANES_1 2
+#define N_PLANES_1 1
 #define N_PLANES_2 20
 #define N_CIRCLES 2
 
@@ -27,7 +27,7 @@ struct Circle {
 void generate_circles(Circle circles[], unsigned long long n) {
     std::srand(0);
     for (int i = 0; i < n; i++) {
-        cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256);
+        cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256, 0);
         cv::Point center(std::rand() % HEIGHT + 1, std::rand() % WIDTH + 1);
         int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
         circles[i] = {color, center, r};
@@ -51,6 +51,8 @@ double renderer_seq(Circle circles[], int nPlanes, int nCircles) {
             cv::circle(plane, circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
         }
         cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
+        cv::imshow("test", result);
+        cv::waitKey(0);
     }
 
     double time = omp_get_wtime() - start;
@@ -81,8 +83,11 @@ double renderer_par(Circle circles[], int nPlanes, int nCircles) {
     }
 #pragma omp barrier
 
-    for (const auto &plane: planes)
+    for (const auto &plane: planes) {
         cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
+        cv::imshow("test", result);
+        cv::waitKey(0);
+    }
 
     double time = omp_get_wtime() - start;
     printf("TIME: %f\n", time);
