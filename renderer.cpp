@@ -19,8 +19,8 @@ double rendererSequential(Circle circles[], int nPlanes, int nCircles) {
     double start = omp_get_wtime();
 
     for (int i = 0; i < nPlanes; i++) {
-        cv::Mat plane;
-        result.copyTo(plane);
+        cv::Mat plane(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+        //result.copyTo(plane);
         printf("PLANE: %d\n", i + 1);
         for (int j = 0; j < nCircles; j++) {
             Circle circle = circles[i*nCircles+j];
@@ -57,7 +57,6 @@ double rendererParallel(Circle circles[], int nPlanes, int nCircles) {
             cv::circle(planes[i], circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
         }
     }
-#pragma omp barrier
 
     for (const auto &plane: planes) {
         cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);

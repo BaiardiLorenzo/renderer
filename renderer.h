@@ -10,10 +10,10 @@
 #define WIDTH 1024
 #define HEIGHT 1024
 #define TRANSPARENT cv::Scalar(255, 255, 255, 0)
-#define ALPHA 0.1
+#define ALPHA 0.2
 
-#define MAX_RADIUS 100
-#define MIN_RADIUS 20
+#define MAX_RADIUS 120
+#define MIN_RADIUS 50
 
 struct Circle {
     cv::Scalar color;
