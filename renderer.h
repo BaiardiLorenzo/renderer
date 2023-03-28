@@ -10,9 +10,9 @@
 #define WIDTH 1024
 #define HEIGHT 1024
 #define TRANSPARENT cv::Scalar(255, 255, 255, 0)
-#define ALPHA 0.2
+#define ALPHA 0.5
 
-#define MAX_RADIUS 150
+#define MAX_RADIUS 200
 #define MIN_RADIUS 100
 
 struct Circle {
@@ -22,9 +22,11 @@ struct Circle {
 };
 
 void generateCircles(Circle circles[], unsigned long long n);
-double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
-double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
 
-void overlayImage(cv::Mat* src, cv::Mat* overlay);
+double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
+void combinePlanesSequential(cv::Mat* src1, cv::Mat* src2);
+
+double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
+void combinePlanesParallel(cv::Mat* result, cv::Mat planes[], unsigned long long nPlanes);
 
 #endif //RENDERER_RENDERER_H

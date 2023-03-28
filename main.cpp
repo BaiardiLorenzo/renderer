@@ -2,9 +2,9 @@
 #include "renderer.h"
 #include <vector>
 
-#define N_PLANES_1 1
-#define N_PLANES_2 15
-#define N_CIRCLES 100
+#define N_PLANES_1 10
+#define N_PLANES_2 200
+#define N_CIRCLES 50
 
 int main() {
 #ifdef _OPENMP
@@ -14,7 +14,6 @@ int main() {
 #endif
     std::vector<double> sequentialTimes;
     std::vector<double> parallelTimes;
-
     std::vector<int> testPlanes = {N_PLANES_1 * threads, N_PLANES_2 * threads};
 
     for (int test: testPlanes) {
@@ -23,6 +22,7 @@ int main() {
         generateCircles(circles, n);
         double t1 = rendererSequential(circles, test, N_CIRCLES);
         double t2 = rendererParallel(circles, test, N_CIRCLES);
+        printf("SPEEDUP TEST %d: %f \n", test, t1/t2);
         sequentialTimes.push_back(t1);
         parallelTimes.push_back(t2);
     }
