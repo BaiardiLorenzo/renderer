@@ -2,9 +2,9 @@
 #include "renderer.h"
 #include <vector>
 
-#define N_PLANES_1 10
-#define N_PLANES_2 100
-#define N_CIRCLES 100
+#define N_PLANES_1 20
+#define N_PLANES_2 150
+#define N_CIRCLES 200
 
 int main() {
 #ifdef _OPENMP

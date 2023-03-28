@@ -53,8 +53,22 @@ double rendererParallel(Circle circles[], int nPlanes, int nCircles) {
         }
     }
 
-    for (const auto &plane: planes)
-        cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
+    //for (const auto &plane: planes)
+    //    cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
+
+    int numProc = omp_get_num_procs();
+    cv::Mat multiplePlanes[numProc];
+
+#pragma omp parallel for default(none) shared(multiplePlanes) firstprivate(nPlanes, planes, nCircles, numProc)
+    for(int i=0; i<numProc; i++) {
+        cv::Mat chunkPlanes(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+        for(int j=0; j<(nPlanes/numProc); j++){
+            cv::addWeighted(planes[i*(nPlanes/numProc)+j], ALPHA, chunkPlanes, 1 - ALPHA, 0, chunkPlanes);
+        }
+        multiplePlanes[i] = chunkPlanes;
+    }
+    for(const auto &plane : multiplePlanes)
+        cv::addWeighted(plane, 1, result, 0, 0, result);
 
     double time = omp_get_wtime() - start;
     printf("TIME PAR %d: %f\n", nPlanes, time);
