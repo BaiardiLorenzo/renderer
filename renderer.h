@@ -25,4 +25,6 @@ void generateCircles(Circle circles[], unsigned long long n);
 double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
 double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
 
+void overlayImage(cv::Mat* src, cv::Mat* overlay);
+
 #endif //RENDERER_RENDERER_H

@@ -64,12 +64,37 @@ double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned l
         }
         multiplePlanes[i] = chunkPlanes;
     }
-    for(const auto &plane : multiplePlanes)
-        cv::addWeighted(plane, 1, result, 0, 0, result);
+    for(int i=0; i<numProc; i++)
+        overlayImage(&result, &multiplePlanes[i]);
 
     double time = omp_get_wtime() - start;
 
     printf("TIME PAR %llu: %f\n", nPlanes, time);
     cv::imwrite("../img/par_" + std::to_string(nPlanes) + ".png", result);
     return time;
+}
+
+
+void overlayImage(cv::Mat* src, cv::Mat* overlay) {
+    for (int y = 0; y < src->rows; y++) {
+        for (int x = 0; x < src->cols; x++) {
+            double alphaSrc = (double)(src->data[y * src->step + x * src->channels() + 3]) / 255;
+            double alphaOverlay = (double)(overlay->data[y * overlay->step + x * overlay->channels() + 3]) / 255;
+            double alpha = alphaOverlay + alphaSrc * (1 - alphaOverlay);
+            unsigned char overlayPx;
+            unsigned char srcPx;
+            unsigned char finalPx;
+
+            for (int c = 0; c < src->channels() - 1; c++) {
+                /* overlayPx = overlay->data[y * overlay->step + x * overlay->channels() + c];
+                 srcPx = src->data[y * src->step + x * src->channels() + c];
+                 finalPx = overlayPx + srcPx * (1 - alphaOverlay);
+                 src->data[y * src->step + src->channels() * x + c] = (finalPx < 255) ? (finalPx + 1) : 255;*/
+                overlayPx = overlay->data[y * overlay->step + x * overlay->channels() + c];
+                srcPx = src->data[y * src->step + x * src->channels() + c];
+                src->data[y * src->step + src->channels() * x + c] = (overlayPx*alphaOverlay + srcPx * alphaSrc * (1-alphaOverlay))/alpha;
+            }
+            src->data[y * src->step + src->channels() * x + 3] = alpha * 255;
+        }
+    }
 }

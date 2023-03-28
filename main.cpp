@@ -2,8 +2,8 @@
 #include "renderer.h"
 #include <vector>
 
-#define N_PLANES_1 20
-#define N_PLANES_2 150
+#define N_PLANES_1 1
+#define N_PLANES_2 15
 #define N_CIRCLES 100
 
 int main() {
