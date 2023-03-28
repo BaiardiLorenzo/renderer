@@ -4,7 +4,7 @@
 
 #define N_PLANES_1 20
 #define N_PLANES_2 150
-#define N_CIRCLES 200
+#define N_CIRCLES 100
 
 int main() {
 #ifdef _OPENMP
@@ -26,7 +26,5 @@ int main() {
         sequentialTimes.push_back(t1);
         parallelTimes.push_back(t2);
     }
-
-
 }
 

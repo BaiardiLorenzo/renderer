@@ -22,7 +22,7 @@ struct Circle {
 };
 
 void generateCircles(Circle circles[], unsigned long long n);
-double rendererSequential(Circle circles[], int nPlanes, int nCircles);
-double rendererParallel(Circle circles[], int nPlanes, int nCircles);
+double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
+double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
 
 #endif //RENDERER_RENDERER_H

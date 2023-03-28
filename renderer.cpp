@@ -3,7 +3,7 @@
 void generateCircles(Circle circles[], unsigned long long n) {
     std::srand(0);
 //Parallel generation circles
-#pragma omp parallel for default(none) shared(circles, n)
+#pragma omp parallel for default(none) shared(circles) firstprivate(n)
     for (int i = 0; i < n; i++) {
         cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256, 255);
         cv::Point center(std::rand() % HEIGHT + 1, std::rand() % WIDTH + 1);
@@ -12,49 +12,46 @@ void generateCircles(Circle circles[], unsigned long long n) {
     }
 }
 
-double rendererSequential(Circle circles[], int nPlanes, int nCircles) {
+double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles) {
     printf("RENDERER SEQUENTIAL\n");
     cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-
-    double start = omp_get_wtime();
-
-    for (int i = 0; i < nPlanes; i++) {
-        cv::Mat plane(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-        //printf("PLANE: %d\n", i + 1);
-        for (int j = 0; j < nCircles; j++) {
-            Circle circle = circles[i*nCircles+j];
-            cv::circle(plane, circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
-        }
-        cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
-    }
-
-    double time = omp_get_wtime() - start;
-
-    printf("TIME SEQ %d: %f\n", nPlanes, time);
-
-    cv::imwrite("../img/seq_" + std::to_string(nPlanes) + ".png", result);
-    return time;
-}
-
-double rendererParallel(Circle circles[], int nPlanes, int nCircles) {
-    printf("RENDERER PARALLEL\n");
-    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
     cv::Mat planes[nPlanes];
-
     double start = omp_get_wtime();
 
-#pragma omp parallel for default(none) shared(planes, nPlanes, circles, nCircles)
     for (int i = 0; i < nPlanes; i++) {
         planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-        //printf("PLANE: %d\n", i + 1);
         for (int j = 0; j < nCircles; j++) {
             Circle circle = circles[i*nCircles+j];
             cv::circle(planes[i], circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
         }
     }
 
-    //for (const auto &plane: planes)
-    //    cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
+    for (const auto &plane: planes)
+        cv::addWeighted(plane, ALPHA, result, 1 - ALPHA, 0, result);
+
+    double time = omp_get_wtime() - start;
+
+    printf("TIME SEQ %llu: %f\n", nPlanes, time);
+
+    cv::imwrite("../img/seq_" + std::to_string(nPlanes) + ".png", result);
+    return time;
+}
+
+double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles) {
+    printf("RENDERER PARALLEL\n");
+    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+    cv::Mat planes[nPlanes];
+
+    double start = omp_get_wtime();
+
+#pragma omp parallel for default(none) shared(planes) firstprivate(nPlanes, circles, nCircles)
+    for (int i = 0; i < nPlanes; i++) {
+        planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+        for (int j = 0; j < nCircles; j++) {
+            Circle circle = circles[i*nCircles+j];
+            cv::circle(planes[i], circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
+        }
+    }
 
     int numProc = omp_get_num_procs();
     cv::Mat multiplePlanes[numProc];
@@ -71,7 +68,8 @@ double rendererParallel(Circle circles[], int nPlanes, int nCircles) {
         cv::addWeighted(plane, 1, result, 0, 0, result);
 
     double time = omp_get_wtime() - start;
-    printf("TIME PAR %d: %f\n", nPlanes, time);
+
+    printf("TIME PAR %llu: %f\n", nPlanes, time);
     cv::imwrite("../img/par_" + std::to_string(nPlanes) + ".png", result);
     return time;
 }
