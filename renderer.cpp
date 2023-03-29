@@ -1,3 +1,4 @@
+#include <iostream>
 #include "renderer.h"
 
 void generateCircles(Circle circles[], unsigned long long n) {
@@ -65,6 +66,7 @@ double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned l
     return time;
 }
 
+
 void combinePlanesSequential(cv::Mat* result, cv::Mat planes[], unsigned long long nPlanes){
     int cn = result->channels();
     for (int i = 0; i < HEIGHT; i++) {
@@ -75,7 +77,7 @@ void combinePlanesSequential(cv::Mat* result, cv::Mat planes[], unsigned long lo
                     unsigned char src1Px = result->data[i * result->step + j * cn + c];
                     unsigned char src2Px = src2->data[i * src2->step + j * cn + c];
                     result->data[i * result->step + cn * j + c] =
-                            ((src2Px * (1 - ALPHA) * 255) + (src1Px * ALPHA * 255)) / 255;
+                            ((src1Px * ALPHA * 255) + (src2Px * (1 - ALPHA) * 255)) / 255;
                 }
                 double alphaSrc1 = (double) (result->data[i * result->step + j * cn + 3]) / 255;
                 double alphaSrc2 = (double) (src2->data[i * src2->step + j * cn + 3]) / 255;
@@ -88,7 +90,7 @@ void combinePlanesSequential(cv::Mat* result, cv::Mat planes[], unsigned long lo
 
 void combinePlanesParallel(cv::Mat* result, cv::Mat planes[], unsigned long long nPlanes){
     int cn = result->channels();
-#pragma omp parallel for default(none) shared(result, planes) firstprivate(nPlanes, cn)
+#pragma omp parallel for collapse(2) default(none) shared(result, planes) firstprivate(nPlanes, cn)
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             for(int z = 0; z < nPlanes; z++) {
@@ -97,7 +99,7 @@ void combinePlanesParallel(cv::Mat* result, cv::Mat planes[], unsigned long long
                     unsigned char src1Px = result->data[i * result->step + j * cn + c];
                     unsigned char src2Px = src2->data[i * src2->step + j * cn + c];
                     result->data[i * result->step + cn * j + c] =
-                            ((src2Px * (1 - ALPHA) * 255) + (src1Px * ALPHA * 255)) / 255;
+                            ((src1Px * ALPHA * 255) + (src2Px * (1 - ALPHA) * 255)) / 255;
                 }
                 double alphaSrc1 = (double) (result->data[i * result->step + j * cn + 3]) / 255;
                 double alphaSrc2 = (double) (src2->data[i * src2->step + j * cn + 3]) / 255;
