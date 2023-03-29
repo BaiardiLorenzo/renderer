@@ -3,8 +3,8 @@
 #include <vector>
 
 #define N_PLANES_1 10
-#define N_PLANES_2 200
-#define N_CIRCLES 50
+#define N_PLANES_2 100
+#define N_CIRCLES 200
 
 int main() {
 #ifdef _OPENMP
@@ -25,6 +25,7 @@ int main() {
         printf("SPEEDUP TEST %d: %f \n", test, t1/t2);
         sequentialTimes.push_back(t1);
         parallelTimes.push_back(t2);
+        printf("\n");
     }
 }
 
