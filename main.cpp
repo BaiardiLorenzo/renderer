@@ -20,10 +20,10 @@ int main() {
         const unsigned long long n = test*N_CIRCLES;
         Circle circles[n];
         generateCircles(circles, n);
-        //double t1 = rendererSequential(circles, test, N_CIRCLES);
+        double t1 = rendererSequential(circles, test, N_CIRCLES);
         double t2 = rendererParallel(circles, test, N_CIRCLES);
-        //printf("SPEEDUP TEST %d: %f \n", test, t1/t2);
-        //sequentialTimes.push_back(t1);
+        printf("SPEEDUP TEST %d: %f \n", test, t1/t2);
+        sequentialTimes.push_back(t1);
         parallelTimes.push_back(t2);
         printf("\n");
     }
