@@ -24,9 +24,11 @@ struct Circle {
 void generateCircles(Circle circles[], unsigned long long n);
 
 double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
-void combinePlanesSequential(cv::Mat* result, cv::Mat planes[], unsigned long long nPlanes);
+
+void combinePlanesSequential(cv::Mat *result, cv::Mat planes[], unsigned long long nPlanes);
 
 double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
-void combinePlanesParallel(cv::Mat* result, cv::Mat planes[], unsigned long long nPlanes);
+
+void combinePlanesParallel(cv::Mat *result, cv::Mat planes[], unsigned long long nPlanes);
 
 #endif //RENDERER_RENDERER_H

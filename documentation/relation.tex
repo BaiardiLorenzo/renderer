@@ -1,15 +1,45 @@
-%! Author = loreb
-%! Date = 29/03/2023
-
 % Preamble
 \documentclass[11pt]{article}
 
 % Packages
 \usepackage{amsmath}
+\usepackage[italian]{babel}
 
 % Document
+\title{Utilizzo di OpenMP in problemi di render
+Parallel Programming for Machine Learning}
+\author{Lorenzo Baiardi, Thomas Del Moro}
+\date{GG MM AAAA}
 \begin{document}
 
+    \maketitle
+        \clearpage
 
+    \tableofcontents
+        \clearpage
+
+    \section{Introduzione}\label{sec:introduzione}
+        In questo elaborato vogliamo dimostrare l'efficacia della parallelizzazione nel campo della computazione di
+        problemi qualsiasi.
+        \clearpage
+
+    \section{Analisi del problema}\label{sec:analisi-del-problema}
+        Il problema che andremo a testare consiste nel effettuare un render di cerchi su un numero specificato di piani.
+        \clearpage
+
+    \section{Parallelizzazione}\label{sec:parallelizazzione}
+        Qui riporteremo le operazioni di parallelizzazione che abbiamo eseguito all'interno del progetto.
+        Per la parallelizzazione ci siamo affidati alla libreria OPENMP .
+        \clearpage
+
+    \section{Test}\label{sec:test}
+        Abbiamo eseguito il test per N volte, variando sia il numero di piani da sommare che nel numero di cerchi
+        da disegnare su ciascun piano.
+        I cerchi generati solo gli stessi sia nel caso del problema sequenziale che nel problema parallelo.
+        @Todo DATI .
+        \clearpage
+
+    \section{Conclusioni}\label{sec:conclusioni}
+        Valutazione dei tempi, speedup, etc.
 
 \end{document}
