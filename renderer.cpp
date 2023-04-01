@@ -15,7 +15,6 @@ void generateCircles(Circle circles[], unsigned long long n) {
 
 double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles) {
     printf("RENDERER SEQUENTIAL %llu: ", nPlanes);
-    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
     cv::Mat planes[nPlanes];
 
     //START
@@ -29,7 +28,7 @@ double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned
         }
     }
 
-    combinePlanesSequential(&result, planes, nPlanes);
+    cv::Mat result = combinePlanesSequential(planes, nPlanes);
 
     double time = omp_get_wtime() - start;
     //END
@@ -40,35 +39,30 @@ double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned
     return time;
 }
 
-void combinePlanesSequential(cv::Mat *result, cv::Mat planes[], unsigned long long nPlanes) {
-    int cn = result->channels();
+cv::Mat combinePlanesSequential(cv::Mat planes[], unsigned long long nPlanes) {
+    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+    int cn = result.channels();
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             for (int z = 0; z < nPlanes; z++) {
                 cv::Mat *src2 = &planes[z];
-                for (int c = 0; c < cn - 1; c++) {
-                    unsigned char src1Px = result->data[i * result->step + j * cn + c];
-                    unsigned char src2Px = src2->data[i * src2->step + j * cn + c];
-                    result->data[i * result->step + cn * j + c] =
-                            ((src1Px * ALPHA * 255) + (src2Px * (1 - ALPHA) * 255)) / 255;
-                }
-                double alphaSrc1 = (double) (result->data[i * result->step + j * cn + 3]) / 255;
-                double alphaSrc2 = (double) (src2->data[i * src2->step + j * cn + 3]) / 255;
-                result->data[i * result->step + cn * j + 3] = ((alphaSrc1 * ALPHA) + (alphaSrc2 * (1 - ALPHA))) * 255;
+                for (int c = 0; c < cn; c++)
+                    result.data[i * result.step + cn * j + c] =
+                            result.data[i * result.step + j * cn + c] * (1 - ALPHA) +
+                            src2->data[i * src2->step + j * cn + c] * ALPHA;
             }
         }
     }
-
+    return result;
 }
 
 double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles) {
     printf("RENDERER PARALLEL %llu: ", nPlanes);
-    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
     cv::Mat planes[nPlanes];
 
     double start = omp_get_wtime();
 
-#pragma omp parallel for default(none) shared(planes, circles, result) firstprivate(nPlanes, nCircles)
+#pragma omp parallel for default(none) shared(planes, circles) firstprivate(nPlanes, nCircles)
     for (int i = 0; i < nPlanes; i++) {
         planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
         for (int j = 0; j < nCircles; j++) {
@@ -77,7 +71,7 @@ double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned l
         }
     }
 
-    combinePlanesParallel(&result, planes, nPlanes);
+    cv::Mat result = combinePlanesParallel(planes, nPlanes);
 
     double time = omp_get_wtime() - start;
 
@@ -87,47 +81,21 @@ double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned l
     return time;
 }
 
-void combinePlanesParallel(cv::Mat *result, cv::Mat planes[], unsigned long long nPlanes) {
-    int cn = result->channels();
+cv::Mat combinePlanesParallel(cv::Mat planes[], unsigned long long nPlanes) {
+    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+    int cn = result.channels();
 #pragma omp parallel for collapse(2) default(none) shared(result, planes) firstprivate(nPlanes, cn)
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
             for (int z = 0; z < nPlanes; z++) {
                 cv::Mat *src2 = &planes[z];
-                for (int c = 0; c < cn - 1; c++) {
-                    unsigned char src1Px = result->data[i * result->step + j * cn + c];
-                    unsigned char src2Px = src2->data[i * src2->step + j * cn + c];
-                    result->data[i * result->step + cn * j + c] =
-                            ((src1Px * ALPHA * 255) + (src2Px * (1 - ALPHA) * 255)) / 255;
-                }
-                double alphaSrc1 = (double) (result->data[i * result->step + j * cn + 3]) / 255;
-                double alphaSrc2 = (double) (src2->data[i * src2->step + j * cn + 3]) / 255;
-                result->data[i * result->step + cn * j + 3] = ((alphaSrc1 * ALPHA) + (alphaSrc2 * (1 - ALPHA))) * 255;
+                for (int c = 0; c < cn; c++)
+                    result.data[i * result.step + cn * j + c] =
+                            result.data[i * result.step + j * cn + c] * (1 - ALPHA) +
+                            src2->data[i * src2->step + j * cn + c] * (ALPHA);
             }
         }
     }
+    return result;
 }
 
-/*
-void combinePlanesSequential(cv::Mat* src1, cv::Mat* src2){
-    if(src1->channels() == src2->channels()) {
-        int cn = src1->channels();
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < WIDTH; j++) {
-                double alphaSrc = (double) (src1->data[i * src1->step + j * cn + 3]) / 255;
-                double alphaOverlay = (double) (src2->data[i * src2->step + j * cn + 3]) / 255;
-                double alpha = alphaOverlay + alphaSrc * (1 - alphaOverlay);
-                for (int c = 0; c < cn - 1; c++) {
-                    unsigned char overlayPx;
-                    unsigned char srcPx;
-                    overlayPx = src2->data[i * src2->step + j * cn + c];
-                    srcPx = src1->data[i * src1->step + j * cn + c];
-                    src1->data[i * src1->step + cn * j + c] =
-                            (overlayPx * alphaOverlay + srcPx * alphaSrc * (1 - alphaOverlay)) / alpha;
-                }
-                src1->data[i * src1->step + cn * j + 3] = alpha * 255;
-            }
-        }
-    }
-}
-*/
