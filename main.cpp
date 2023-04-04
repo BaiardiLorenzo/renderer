@@ -17,7 +17,7 @@ int main() {
     for (int i = MIN_TEST; i <= MAX_TESTS; i += 10)
         testPlanes.push_back(i);
 
-    for (int i = 2; i < omp_get_num_procs(); i++) {
+    for (int i = 2; i < omp_get_num_procs(); i*=2) {
         omp_set_num_threads(i);
         printf("TEST with Core/Threads: %d\n", i);
         for (int test: testPlanes) {

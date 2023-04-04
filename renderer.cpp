@@ -2,7 +2,7 @@
 #include "renderer.h"
 
 void generateCircles(Circle circles[], unsigned long long n) {
-    std::srand(123);
+    std::srand(777);
 //Parallel generation circles
 #pragma omp parallel for default(none) shared(circles) firstprivate(n)
     for (int i = 0; i < n; i++) {
