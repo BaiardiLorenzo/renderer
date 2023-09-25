@@ -15,6 +15,8 @@
 #define MAX_RADIUS 200
 #define MIN_RADIUS 100
 
+#define DEBUG 0
+
 struct Circle {
     cv::Scalar color;
     cv::Point center;

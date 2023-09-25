@@ -3,7 +3,7 @@
 
 void generateCircles(Circle circles[], unsigned long long n) {
     std::srand(777);
-//Parallel generation circles
+// PARALLEL GENERATION CIRCLES
 #pragma omp parallel for default(none) shared(circles) firstprivate(n)
     for (int i = 0; i < n; i++) {
         cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256, 255);
@@ -17,7 +17,7 @@ double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned
     printf("RENDERER SEQUENTIAL %llu: ", nPlanes);
     cv::Mat planes[nPlanes];
 
-    //START
+    // START
     double start = omp_get_wtime();
 
     for (int i = 0; i < nPlanes; i++) {
@@ -31,7 +31,7 @@ double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned
     cv::Mat result = combinePlanesSequential(planes, nPlanes);
 
     double time = omp_get_wtime() - start;
-    //END
+    // END
 
     printf(" TIME %f sec.\n", time);
 
