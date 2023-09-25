@@ -1,7 +1,7 @@
 #include <iostream>
 #include "renderer.h"
 
-void generateCircles(Circle circles[], unsigned long long n) {
+void generateCircles(Circle circles[], std::size_t n) {
     std::srand(777);
 // PARALLEL GENERATION CIRCLES
 #pragma omp parallel for default(none) shared(circles) firstprivate(n)
@@ -13,9 +13,9 @@ void generateCircles(Circle circles[], unsigned long long n) {
     }
 }
 
-double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles) {
+double rendererSequential(Circle circles[], std::size_t nPlanes, std::size_t nCircles) {
     printf("RENDERER SEQUENTIAL %llu: ", nPlanes);
-    cv::Mat planes[nPlanes];
+    auto* planes = new cv::Mat[nPlanes];
 
     // START
     double start = omp_get_wtime();
@@ -23,7 +23,7 @@ double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned
     for (int i = 0; i < nPlanes; i++) {
         planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
         for (int j = 0; j < nCircles; j++) {
-            Circle circle = circles[i * nCircles + j];
+            auto circle = circles[i * nCircles + j];
             cv::circle(planes[i], circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
         }
     }
@@ -35,11 +35,13 @@ double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned
 
     printf(" TIME %f sec.\n", time);
 
+    delete[] planes;
+
     cv::imwrite("../img/seq_" + std::to_string(nPlanes) + ".png", result);
     return time;
 }
 
-cv::Mat combinePlanesSequential(cv::Mat planes[], unsigned long long nPlanes) {
+cv::Mat combinePlanesSequential(cv::Mat planes[], std::size_t nPlanes) {
     cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
     int cn = result.channels();
     for (int i = 0; i < HEIGHT; i++) {
@@ -56,10 +58,11 @@ cv::Mat combinePlanesSequential(cv::Mat planes[], unsigned long long nPlanes) {
     return result;
 }
 
-double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles) {
+double rendererParallel(Circle circles[], std::size_t nPlanes, std::size_t nCircles) {
     printf("RENDERER PARALLEL %llu: ", nPlanes);
-    cv::Mat planes[nPlanes];
+    auto* planes = new cv::Mat[nPlanes];
 
+    // START
     double start = omp_get_wtime();
 
 #pragma omp parallel for default(none) shared(planes, circles) firstprivate(nPlanes, nCircles)
@@ -74,14 +77,16 @@ double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned l
     cv::Mat result = combinePlanesParallel(planes, nPlanes);
 
     double time = omp_get_wtime() - start;
-
+    // END
     printf(" TIME %f sec.\n", time);
+
+    delete[] planes;
 
     cv::imwrite("../img/par_" + std::to_string(nPlanes) + ".png", result);
     return time;
 }
 
-cv::Mat combinePlanesParallel(cv::Mat planes[], unsigned long long nPlanes) {
+cv::Mat combinePlanesParallel(cv::Mat planes[], std::size_t nPlanes) {
     cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
     int cn = result.channels();
 #pragma omp parallel for collapse(2) default(none) shared(result, planes) firstprivate(nPlanes, cn)

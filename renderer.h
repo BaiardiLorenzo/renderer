@@ -15,7 +15,6 @@
 #define MAX_RADIUS 200
 #define MIN_RADIUS 100
 
-#define DEBUG 0
 
 struct Circle {
     cv::Scalar color;
@@ -23,14 +22,14 @@ struct Circle {
     int r;
 };
 
-void generateCircles(Circle circles[], unsigned long long n);
+void generateCircles(Circle circles[], std::size_t n);
 
-double rendererSequential(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
+double rendererSequential(Circle circles[], std::size_t nPlanes, std::size_t nCircles);
 
-cv::Mat combinePlanesSequential(cv::Mat planes[], unsigned long long nPlanes);
+cv::Mat combinePlanesSequential(cv::Mat planes[], std::size_t nPlanes);
 
-double rendererParallel(Circle circles[], unsigned long long nPlanes, unsigned long long nCircles);
+double rendererParallel(Circle circles[], std::size_t nPlanes, std::size_t nCircles);
 
-cv::Mat combinePlanesParallel(cv::Mat planes[], unsigned long long nPlanes);
+cv::Mat combinePlanesParallel(cv::Mat planes[], std::size_t nPlanes);
 
 #endif //RENDERER_RENDERER_H
