@@ -36,18 +36,18 @@ int main() {
             generateCircles(circles, n);
 
             // TEST SEQUENTIAL AND PARALLEL
-            double t1 = rendererSequential(circles, test, N_CIRCLES);
-            double t2 = rendererParallel(circles, test, N_CIRCLES);
+            double tSeq = rendererSequential(circles, test, N_CIRCLES);
+            double tPar = rendererParallel(circles, test, N_CIRCLES);
 
             delete[] circles;
 
-            double speedUp = t1/t2;
+            double speedUp = tSeq / tPar;
             printf("SPEEDUP TEST %llu: %f \n\n", test, speedUp);
 
             // WRITE TO TEXT
             outfile.open(fileName, std::ios::out | std::ios::app);
             if(outfile.is_open())
-                outfile<<i<<";"<<speedUp<<";"<<test<<";"<<t1<<";"<<t2<<"\n";
+                outfile << i << ";" << speedUp << ";" << test << ";" << tSeq << ";" << tPar << "\n";
             outfile.close();
         }
     }

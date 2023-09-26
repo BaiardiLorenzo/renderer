@@ -10,9 +10,6 @@ find_package(OpenCV REQUIRED)
 find_package(OpenMP REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-MATH(EXPR stack_size "16 * 1024 * 1024")
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--stack,${stack_size}")
-
 add_executable(renderer main.cpp renderer.cpp renderer.h)
 
 set(OpenCV_LIBS opencv_core opencv_imgproc opencv_highgui opencv_imgcodecs)
