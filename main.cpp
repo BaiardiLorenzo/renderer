@@ -16,7 +16,7 @@ int main() {
 #endif
     std::ofstream outfile;
     std::string fileName = "../test.csv";
-    outfile.open(fileName, std::ios::out | std::ios::app);
+    outfile.open(fileName);
     if(outfile.is_open())
         outfile << "THREADS ; SPEEDUP ; TEST ; SEQ ; PAR \n";
     outfile.close();
