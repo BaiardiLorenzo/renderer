@@ -22,7 +22,7 @@ struct Circle {
     int r;
 };
 
-void generateCircles(Circle circles[], std::size_t n);
+Circle* generateCircles(std::size_t n);
 
 double rendererSequential(Circle circles[], std::size_t nPlanes, std::size_t nCircles);
 
