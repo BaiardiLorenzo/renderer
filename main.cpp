@@ -1,16 +1,4 @@
-#include <iostream>
 #include "renderer.h"
-#include <fstream>
-#include <vector>
-
-#define TEST_PATH "../test.csv"
-#define HEADER_TEST "THREADS;SPEEDUP;TEST;SEQ;PAR\n"
-
-#define MAX_TESTS 100
-#define SPACE 10
-#define MIN_TEST 10
-#define N_CIRCLES 100
-
 
 void headerResults(){
     std::ofstream outfile;
@@ -20,11 +8,11 @@ void headerResults(){
     outfile.close();
 }
 
-void exportResults(int nThreads, double speedUp, std::size_t test, double tSeq, double tPar){
+void exportResults(const std::string& type, int nThreads, double speedUp, std::size_t test, double tSeq, double tPar){
     std::ofstream outfile;
     outfile.open(TEST_PATH, std::ios::out | std::ios::app);
     if (outfile.is_open())
-        outfile<<nThreads<<";"<<speedUp<<";"<<test<<";"<<tSeq<<";"<<tPar<<"\n";
+        outfile<<type<<";"<<nThreads<<";"<<speedUp<<";"<<test<<";"<<tSeq<<";"<<tPar<<"\n";
     outfile.close();
 }
 
@@ -43,7 +31,7 @@ int main() {
         printf("Number of cores/threads used: %d\n", i);
         omp_set_num_threads(i); // SET NUMBER OF THREADS
         for (auto test: testPlanes) {
-            printf("TEST: %llu\n", test);
+            printf("TEST AoS: %llu\n", test);
             // GENERATION OF CIRCLES
             std::size_t n = test * N_CIRCLES;
             auto circles = generateCircles(n);
@@ -56,10 +44,30 @@ int main() {
             printf("Speedup: %f \n\n", speedUp);
 
             // WRITE RESULTS TO TXT FILE
-            exportResults(i,speedUp,test,tSeq,tPar);
+            exportResults("AoS",i,speedUp,test,tSeq,tPar);
 
             // DELETE ARRAY DYNAMIC ALLOCATED
             delete[] circles;
+
+            printf("TEST SoA: %llu\n", test);
+            // GENERATION OF CIRCLES
+            auto circlesSoA = generateSoACircles(n);
+
+            // TEST SEQUENTIAL AND PARALLEL
+            tSeq = rendererSoASequential(circlesSoA, test, N_CIRCLES);
+            tPar = rendererSoAParallel(circlesSoA, test, N_CIRCLES);
+
+            speedUp = tSeq / tPar;
+            printf("Speedup: %f \n\n", speedUp);
+
+            // WRITE RESULTS TO TXT FILE
+            exportResults("SoA",i,speedUp,test,tSeq,tPar);
+
+            // DELETE ARRAY DYNAMIC ALLOCATED
+            delete[] circlesSoA->colors;
+            delete[] circlesSoA->centers;
+            delete[] circlesSoA->rs;
+            delete[] circlesSoA;
         }
     }
     return 0;
