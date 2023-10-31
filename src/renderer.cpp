@@ -50,8 +50,6 @@ double rendererSequential(Circle circles[], std::size_t nPlanes, std::size_t nCi
     double time = omp_get_wtime() - start;
     // END
 
-    printf("Sequential time %f sec.\n", time);
-
     delete[] planes;
 
     cv::imwrite("../img/seq_" + std::to_string(nPlanes) + ".png", result);
@@ -76,8 +74,6 @@ double rendererSoASequential(Circles* circles, std::size_t nPlanes, std::size_t 
 
     double time = omp_get_wtime() - start;
     // END
-
-    printf("Sequential time %f sec.\n", time);
 
     delete[] planes;
 
@@ -120,8 +116,6 @@ double rendererParallel(Circle circles[], std::size_t nPlanes, std::size_t nCirc
     cv::Mat result = combinePlanesParallel(planes, nPlanes);
 
     double time = omp_get_wtime() - start;
-    // END
-    printf("Parallel time %f sec.\n", time);
 
     delete[] planes;
 
@@ -147,8 +141,6 @@ double rendererSoAParallel(Circles* circles, std::size_t nPlanes, std::size_t nC
     cv::Mat result = combinePlanesParallel(planes, nPlanes);
 
     double time = omp_get_wtime() - start;
-    // END
-    printf("Parallel time %f sec.\n", time);
 
     delete[] planes;
 

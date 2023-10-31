@@ -2,8 +2,7 @@
 #define RENDERER_TEST_H
 
 // PATH RESULT FILE
-#define TEST_PATH "../test.csv"
-#define HEADER_TEST "AoS/SoA;THREADS;SPEEDUP;TEST;SEQ;PAR\n"
+#define TEST_PATH "../results/test.csv"
 
 // IMAGES
 #define WIDTH 1024
