@@ -1,168 +1,90 @@
 #include "renderer.h"
 
-Circle* generateCircles(std::size_t n) {
+Circle* generateCircles(std::size_t n, int width, int height, int minRadius, int maxRadius) {
     auto* circles = new Circle[n];
-    std::srand(777);
-#pragma omp parallel for default(none) shared(circles) firstprivate(n) // PARALLEL GENERATION CIRCLES
+    std::mt19937 generator(777);
+
+    std::uniform_int_distribution<int> colorDistribution(0, 255);
+    std::uniform_int_distribution<int> pointXDistribution(1, width);
+    std::uniform_int_distribution<int> pointYDistribution(1, height);
+    std::uniform_int_distribution<int> radiusDistribution(minRadius, maxRadius);
+
+#pragma omp parallel for default(none) shared(circles, generator, n, colorDistribution, pointXDistribution, pointYDistribution, radiusDistribution)
     for (int i = 0; i < n; i++) {
-        cv::Scalar color(std::rand() % 256, std::rand() % 256, std::rand() % 256, 255);
-        cv::Point center(std::rand() % HEIGHT + 1, std::rand() % WIDTH + 1);
-        int r = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
-        circles[i] = {color, center, r};
+        cv::Scalar color(colorDistribution(generator), colorDistribution(generator), colorDistribution(generator), 255);
+        cv::Point center(pointXDistribution(generator), pointYDistribution(generator));
+        int r = radiusDistribution(generator);
+        circles[i] = Circle{color, center, r};
     }
+
     return circles;
 }
 
-Circles* generateSoACircles(std::size_t n){
-    auto* circles = new Circles;
-    auto* colors = new cv::Scalar[n];
-    auto* center = new cv::Point[n];
-    auto* r = new int[n];
-    std::srand(777);
-#pragma omp parallel for default(none) shared(colors, center, r) firstprivate(n) // PARALLEL GENERATION CIRCLES
-    for (int i = 0; i < n; i++) {
-        colors[i] = cv::Scalar(std::rand() % 256, std::rand() % 256, std::rand() % 256, 255);
-        center[i] = cv::Point(std::rand() % HEIGHT + 1, std::rand() % WIDTH + 1);
-        r[i] = std::rand() % (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS + 1;
-    }
-    circles->centers = center;
-    circles->colors = colors;
-    circles->rs = r;
-    return circles;
-}
+cv::Mat* generatePlanes(std::size_t nPlanes, Circle circles[], std::size_t nCircles) {
+    auto *planes = new cv::Mat[nPlanes];
 
-double rendererSequential(Circle circles[], std::size_t nPlanes, std::size_t nCircles) {
-    auto* planes = new cv::Mat[nPlanes];
-
-    // START
-    double start = omp_get_wtime();
-
+#pragma omp parallel for default(none) shared(planes, circles) firstprivate(nPlanes, nCircles)
     for (int i = 0; i < nPlanes; i++) {
-        planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
+        planes[i] = TRANSPARENT_MAT;
         for (int j = 0; j < nCircles; j++) {
             auto circle = circles[i * nCircles + j];
             cv::circle(planes[i], circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
         }
     }
 
-    cv::Mat result = combinePlanesSequential(planes, nPlanes);
-
-    double time = omp_get_wtime() - start;
-    // END
-
-    delete[] planes;
-
-    cv::imwrite("../img/seq_" + std::to_string(nPlanes) + ".png", result);
-    return time;
+    return planes;
 }
 
-double rendererSoASequential(Circles* circles, std::size_t nPlanes, std::size_t nCircles) {
-    auto* planes = new cv::Mat[nPlanes];
+double sequentialRenderer(cv::Mat planes[], std::size_t nPlanes) {
+    cv::Mat result = TRANSPARENT_MAT;
+    int cn = result.channels();
 
     // START
     double start = omp_get_wtime();
 
-    for (int i = 0; i < nPlanes; i++) {
-        planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-        for (int j = 0; j < nCircles; j++) {
-            std::size_t z = i * nCircles + j;
-            cv::circle(planes[i], circles->centers[z], circles->rs[z], circles->colors[z], cv::FILLED, cv::LINE_AA);
-        }
-    }
-
-    cv::Mat result = combinePlanesSequential(planes, nPlanes);
-
-    double time = omp_get_wtime() - start;
-    // END
-
-    delete[] planes;
-
-    cv::imwrite("../img/seq_" + std::to_string(nPlanes) + ".png", result);
-    return time;
-}
-
-cv::Mat combinePlanesSequential(cv::Mat planes[], std::size_t nPlanes) {
-    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-    std::size_t cn = result.channels();
-    for (std::size_t i = 0; i < HEIGHT; i++) {
-        for (std::size_t j = 0; j < WIDTH; j++) {
-            for (std::size_t z = 0; z < nPlanes; z++) {
+    for (int i = 0; i < result.rows; i++) {
+        for (int j = 0; j < result.cols; j++) {
+            for (int z = 0; z < nPlanes; z++) {
                 cv::Mat *src2 = &planes[z];
-                for (std::size_t c = 0; c < cn; c++)
-                    result.data[i * result.step + cn * j + c] =
-                            result.data[i * result.step + j * cn + c] * (1 - ALPHA) +
-                            src2->data[i * src2->step + j * cn + c] * ALPHA;
-            }
-        }
-    }
-    return result;
-}
-
-double rendererParallel(Circle circles[], std::size_t nPlanes, std::size_t nCircles) {
-    auto* planes = new cv::Mat[nPlanes];
-
-    // START
-    double start = omp_get_wtime();
-
-#pragma omp parallel for default(none) shared(planes, circles) firstprivate(nPlanes, nCircles)
-    for (int i = 0; i < nPlanes; i++) {
-        planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-        for (int j = 0; j < nCircles; j++) {
-            Circle circle = circles[i * nCircles + j];
-            cv::circle(planes[i], circle.center, circle.r, circle.color, cv::FILLED, cv::LINE_AA);
-        }
-    }
-
-    cv::Mat result = combinePlanesParallel(planes, nPlanes);
-
-    double time = omp_get_wtime() - start;
-
-    delete[] planes;
-
-    cv::imwrite("../img/par_" + std::to_string(nPlanes) + ".png", result);
-    return time;
-}
-
-double rendererSoAParallel(Circles* circles, std::size_t nPlanes, std::size_t nCircles) {
-    auto* planes = new cv::Mat[nPlanes];
-
-    // START
-    double start = omp_get_wtime();
-
-#pragma omp parallel for default(none) shared(planes, circles) firstprivate(nPlanes, nCircles)
-    for (int i = 0; i < nPlanes; i++) {
-        planes[i] = cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-        for (int j = 0; j < nCircles; j++) {
-            std::size_t z = i * nCircles + j;
-            cv::circle(planes[i], circles->centers[z], circles->rs[z], circles->colors[z], cv::FILLED, cv::LINE_AA);
-        }
-    }
-
-    cv::Mat result = combinePlanesParallel(planes, nPlanes);
-
-    double time = omp_get_wtime() - start;
-
-    delete[] planes;
-
-    cv::imwrite("../img/par_" + std::to_string(nPlanes) + ".png", result);
-    return time;
-}
-
-cv::Mat combinePlanesParallel(cv::Mat planes[], std::size_t nPlanes) {
-    cv::Mat result(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT);
-    std::size_t cn = result.channels();
-#pragma omp parallel for collapse(2) default(none) shared(result, planes) firstprivate(nPlanes, cn)
-    for (std::size_t i = 0; i < HEIGHT; i++) {
-        for (std::size_t j = 0; j < WIDTH; j++) {
-            for (std::size_t z = 0; z < nPlanes; z++) {
-                cv::Mat *src2 = &planes[z];
-                for (std::size_t c = 0; c < cn; c++)
+                for (int c = 0; c < cn; c++)
                     result.data[i * result.step + cn * j + c] =
                             result.data[i * result.step + j * cn + c] * (1 - ALPHA) +
                             src2->data[i * src2->step + j * cn + c] * (ALPHA);
             }
         }
     }
-    return result;
+
+    double time = omp_get_wtime() - start;
+    // END
+
+    cv::imwrite(SEQ_IMG_PATH + std::to_string(nPlanes) + ".png", result);
+    return time;
+}
+
+double parallelRenderer(cv::Mat planes[], std::size_t nPlanes) {
+    cv::Mat result = TRANSPARENT_MAT;
+    int cn = result.channels();
+
+    // START
+    double start = omp_get_wtime();
+
+#pragma omp parallel for default(none) shared(result, planes) firstprivate(nPlanes, cn) collapse(2)
+    for (int i = 0; i < result.rows; i++) {
+        for (int j = 0; j < result.cols; j++) {
+            for (int z = 0; z < nPlanes; z++) {
+                cv::Mat *src2 = &planes[z];
+                for (int c = 0; c < cn; c++)
+                    result.data[i * result.step + cn * j + c] =
+                            result.data[i * result.step + j * cn + c] * (1 - ALPHA) +
+                            src2->data[i * src2->step + j * cn + c] * (ALPHA);
+            }
+        }
+    }
+
+    double time = omp_get_wtime() - start;
+    // END
+
+    cv::imwrite(PAR_IMG_PATH + std::to_string(nPlanes) + ".png", result);
+    return time;
 }
 

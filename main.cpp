@@ -1,6 +1,7 @@
 #include "src/renderer.h"
+#include "src/test.h"
 #include <map>
-
+#include <iomanip>
 
 void headerResults(const std::string& filename, int nThreads){
     std::ofstream outfile;
@@ -18,6 +19,7 @@ void exportResults(const std::string& filename, std::size_t test, double tSeq, c
     std::ofstream outfile;
     outfile.open(filename, std::ios::out | std::ios::app);
     if(outfile.is_open()){
+        outfile << std::fixed << std::setprecision(3);
         outfile << test << ";" << tSeq << ";";
         for(auto tPar: tPars)
             outfile << tPar.second << ";" << speedUps[tPar.first] << ";";
@@ -32,20 +34,20 @@ int main() {
     printf("**Number of cores/threads: %d**\n", omp_get_num_procs());
     omp_set_dynamic(0);
 #endif
-    headerResults(TEST_PATH, omp_get_num_procs());
+    headerResults(RESULT_PATH, omp_get_num_procs());
     std::vector<std::size_t> testPlanes;
     for (std::size_t i = MIN_TEST; i <= MAX_TESTS; i += SPACE)
         testPlanes.push_back(i);
 
     for (auto test: testPlanes) {
         // GENERATION OF CIRCLES
-        std::size_t n = test * N_CIRCLES;
-        auto circles = generateCircles(n);
+        auto circles = generateCircles(test * N_CIRCLES, WIDTH, HEIGHT, MIN_RADIUS, MAX_RADIUS);
+        auto planes = generatePlanes(test, circles, N_CIRCLES);
 
         printf("\nTEST: %llu\n", test);
 
         // TEST SEQUENTIAL
-        double tSeq = rendererSequential(circles, test, N_CIRCLES);
+        double tSeq = sequentialRenderer(planes, test);
         printf("Sequential time: %f\n", tSeq);
 
         // TEST PARALLEL
@@ -56,7 +58,7 @@ int main() {
             omp_set_num_threads(i);
 
             // TEST PARALLEL
-            double tPar = rendererParallel(circles, test, N_CIRCLES);
+            double tPar = parallelRenderer(planes, test);
             printf("Parallel time with %d threads: %f\n", i, tPar);
 
             double speedUp = tSeq / tPar;
@@ -67,11 +69,12 @@ int main() {
             speedUps.insert(std::pair<std::size_t, double>(i, speedUp));
         }
 
-        // WRITE RESULTS TO TXT FILE
-        exportResults(TEST_PATH, test, tSeq, tPars, speedUps);
+        //WRITE RESULTS TO TXT FILE
+        exportResults(RESULT_PATH, test, tSeq, tPars, speedUps);
 
         // DELETE ARRAY DYNAMIC ALLOCATED
         delete[] circles;
+        delete[] planes;
     }
     return 0;
 }

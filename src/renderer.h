@@ -7,6 +7,7 @@
 #include <fstream>
 #include <vector>
 #include <iostream>
+#include <random>
 #include <opencv2/core/types.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -26,20 +27,21 @@ struct Circles{
 };
 
 
-Circle* generateCircles(std::size_t n);
+// GENERATION
+Circle* generateCircles(std::size_t n, int width, int height, int minRadius, int maxRadius);
 
 Circles* generateSoACircles(std::size_t n);
 
-double rendererSequential(Circle circles[], std::size_t nPlanes, std::size_t nCircles);
+cv::Mat* generatePlanes(std::size_t nPlanes, Circle circles[], std::size_t nCircles);
+
+// RENDERING
+double sequentialRenderer(cv::Mat planes[], std::size_t nPlanes);
 
 double rendererSoASequential(Circles* circles, std::size_t nPlanes, std::size_t nCircles);
 
-cv::Mat combinePlanesSequential(cv::Mat planes[], std::size_t nPlanes);
-
-double rendererParallel(Circle circles[], std::size_t nPlanes, std::size_t nCircles);
+double parallelRenderer(cv::Mat planes[], std::size_t nPlanes);
 
 double rendererSoAParallel(Circles* circles, std::size_t nPlanes, std::size_t nCircles);
 
-cv::Mat combinePlanesParallel(cv::Mat planes[], std::size_t nPlanes);
 
 #endif //RENDERER_RENDERER_H
