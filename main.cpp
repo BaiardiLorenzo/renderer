@@ -7,9 +7,9 @@ void headerResults(const std::string& filename, int nThreads){
     std::ofstream outfile;
     outfile.open(filename);
     if(outfile.is_open())
-        outfile << "test;tSeq;";
+        outfile << "TEST;T_SEQ;";
     for(int i=2; i<=nThreads; i+=2)
-        outfile << "tPar" << i << ";speedUp" << i << ";";
+        outfile << "T_PAR" << i << ";SPEEDUP" << i << ";";
     outfile << "\n";
     outfile.close();
 }
@@ -31,7 +31,7 @@ void exportResults(const std::string& filename, std::size_t test, double tSeq, c
 
 int main() {
 #ifdef _OPENMP
-    printf("**Number of cores/threads: %d**\n", omp_get_num_procs());
+    printf("**OPENMP :: Number of cores/threads: %d**\n", omp_get_num_procs());
     omp_set_dynamic(0);
 #endif
     headerResults(RESULT_PATH, omp_get_num_procs());
@@ -44,32 +44,32 @@ int main() {
         auto circles = generateCircles(test * N_CIRCLES, WIDTH, HEIGHT, MIN_RADIUS, MAX_RADIUS);
         auto planes = generatePlanes(test, circles, N_CIRCLES);
 
-        printf("\nTEST: %llu\n", test);
+        printf("\nTEST PLANES: %llu\n", test);
 
         // TEST SEQUENTIAL
         double tSeq = sequentialRenderer(planes, test);
-        printf("Sequential time: %f\n", tSeq);
+        printf("SEQUENTIAL Time: %f\n", tSeq);
 
         // TEST PARALLEL
         std::map<std::size_t, double> tPars;
         std::map<std::size_t, double> speedUps;
         for (int i=2; i<=omp_get_num_procs(); i+=2) {
-            //SET NUMBER OF THREADS
+            // SET NUMBER OF THREADS
             omp_set_num_threads(i);
 
             // TEST PARALLEL
             double tPar = parallelRenderer(planes, test);
-            printf("Parallel time with %d threads: %f\n", i, tPar);
+            printf("PARALLEL-%d Time: %f\n", i, tPar);
 
             double speedUp = tSeq / tPar;
-            printf("Speedup with %d threads: %f \n", i, speedUp);
+            printf("PARALLEL-%d Speedup: %f \n", i, speedUp);
 
             // SAVE RESULTS
             tPars.insert(std::pair<std::size_t, double>(i, tPar));
             speedUps.insert(std::pair<std::size_t, double>(i, speedUp));
         }
 
-        //WRITE RESULTS TO TXT FILE
+        // WRITE RESULTS TO TXT FILE
         exportResults(RESULT_PATH, test, tSeq, tPars, speedUps);
 
         // DELETE ARRAY DYNAMIC ALLOCATED
@@ -78,4 +78,3 @@ int main() {
     }
     return 0;
 }
-

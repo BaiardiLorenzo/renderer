@@ -5,39 +5,44 @@ from matplotlib import pyplot as plt
 results_folder = 'csv/result-'
 
 plot_folder = 'plots/'
-plot_omp_times = 'results_times.png'
-plot_omp_speedup = 'results_speedup.png'
+
+plot_results_times = 'results_times.png'
+plot_results_speedup = 'results_speedup.png'
+
+test = "TEST"
+t_seq = "T_SEQ"
+t_par = "T_PAR"
+speedup = "SPEEDUP"
 
 
 def plot_csv(data, folder):
-    # Leggi il file CSV
+    # Read file CSV
     data = pd.read_csv(data, sep=';')
-
-    # Plot OMP
+    # Plot Tempi
     plt.figure()
-    plt.plot(data['test'], data['tSeq'], marker='o', label='Sequenziale')
+    plt.plot(data[test], data[t_seq], marker='o', label='Sequential')
     for i in range(2, len(data.columns) - 2, 2):
-        plt.plot(data['test'], data[f'tPar{i}'], marker='o', label=f'Parallelo {i} Thread')
-    plt.xlabel('Dimensione del test')
-    plt.ylabel('Tempo (secondi)')
-    plt.title('Tempi di esecuzione')
+        plt.plot(data[test], data[t_par + str(i)], marker='o', label=f'{i} Threads')
+    plt.xlabel('Planes')
+    plt.ylabel('Time (seconds)')
+    plt.title('Execution Times')
     plt.legend()
     plt.grid()
     plt.tight_layout()
-    plt.savefig(folder + plot_omp_times)
-    # plt.show()
+    plt.savefig(folder + plot_results_times)
 
     # Plot Speedup
     plt.figure()
+    plt.plot(data[test], data[t_seq]/data[t_seq], marker='o', label=f'Sequential')
     for i in range(2, len(data.columns) - 2, 2):
-        plt.plot(data['test'], data[f'speedUp{i}'], marker='o', label=f'Parallelo {i} Thread')
-    plt.xlabel('Dimensione del test')
+        plt.plot(data[test], data[speedup + str(i)], marker='o', label=f'{i} Threads')
+    plt.xlabel('Planes')
     plt.ylabel('Speedup')
-    plt.title('Speedup')
+    plt.title('Speedups')
     plt.legend()
     plt.grid()
     plt.tight_layout()
-    plt.savefig(folder + plot_omp_speedup)
+    plt.savefig(folder + plot_results_speedup)
     # plt.show()
 
 

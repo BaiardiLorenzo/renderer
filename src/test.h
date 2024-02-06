@@ -7,20 +7,20 @@
 #define PAR_IMG_PATH "../results/img/par/"
 
 // IMAGES
-#define WIDTH 1024
-#define HEIGHT 1024
+#define WIDTH 256
+#define HEIGHT 256
 #define TRANSPARENT cv::Scalar(255, 255, 255, 0)
 #define TRANSPARENT_MAT cv::Mat(HEIGHT, WIDTH, CV_8UC4, TRANSPARENT)
 #define ALPHA 0.5
 
 // RADIUS CIRCLES
 #define MAX_RADIUS 200
-#define MIN_RADIUS 50
+#define MIN_RADIUS 10
 
 // FOR TESTING
 #define MAX_TESTS 1000
-#define SPACE 100
 #define MIN_TEST 100
+#define SPACE 100
 #define N_CIRCLES 100
 
 #endif //RENDERER_TEST_H
