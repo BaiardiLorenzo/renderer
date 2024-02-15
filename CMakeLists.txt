@@ -12,7 +12,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_executable(renderer main.cpp src/renderer.cpp src/renderer.h
         src/test.h
-        src/utils.h)
+        src/utils.h
+        src/utils.cpp
+)
 
 set(OpenCV_LIBS opencv_core opencv_imgproc opencv_highgui opencv_imgcodecs)
 
