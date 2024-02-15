@@ -19,9 +19,9 @@
 #define MIN_RADIUS 10
 
 // FOR TESTING
-#define MAX_TESTS 2800
+#define MAX_TESTS 10000
 #define MIN_TEST 1000
-#define SPACE 200
+#define SPACE 1000
 #define N_CIRCLES 50
 
 

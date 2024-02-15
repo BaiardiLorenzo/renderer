@@ -88,20 +88,19 @@ int main() {
 #endif
 
     // TEST PARALLELIZATION
-    /*
     std::vector<std::size_t> testPlanes;
     for (std::size_t i = MIN_TEST; i <= MAX_TESTS; i += SPACE)
         testPlanes.push_back(i);
     testParallelization(testPlanes);
-    */
 
     // n = 50, 500
     // N = 100, 1000, 10000
     // D = 256x256, 512x512, 1024x1024
+    /*
     std::vector<std::size_t> testPlanesCircles {100, 1000, 10000};
     std::vector<std::size_t> testCirclesCircles {50, 500};
     testCircles(testPlanesCircles, testCirclesCircles);
-
+    */
     return 0;
 }
 
