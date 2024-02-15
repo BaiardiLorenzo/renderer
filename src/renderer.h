@@ -21,14 +21,18 @@ struct Circle {
 };
 
 // GENERATION
-Circle* generateCircles(std::size_t n, int width, int height, int minRadius, int maxRadius);
+Circle* sequentialGenerateCircles(std::size_t n, int width, int height, int minRadius, int maxRadius);
 
-cv::Mat* generatePlanes(std::size_t nPlanes, Circle circles[], std::size_t nCircles);
+cv::Mat* sequentialGeneratePlanes(std::size_t nPlanes, Circle circles[], std::size_t nCircles);
+
+Circle* parallelGenerateCircles(std::size_t n, int width, int height, int minRadius, int maxRadius);
+
+cv::Mat* parallelGeneratePlanes(std::size_t nPlanes, Circle circles[], std::size_t nCircles);
+
 
 // RENDERING
 double sequentialRenderer(cv::Mat planes[], std::size_t nPlanes);
 
 double parallelRenderer(cv::Mat planes[], std::size_t nPlanes);
-
 
 #endif //RENDERER_RENDERER_H

@@ -1,48 +1,15 @@
 #include "src/renderer.h"
 #include "src/test.h"
+#include "src/utils.h"
 #include <map>
 #include <iomanip>
 
-void headerResults(const std::string& filename, int nThreads){
-    std::ofstream outfile;
-    outfile.open(filename);
-    if(outfile.is_open())
-        outfile << "TEST;T_SEQ;";
-    for(int i=2; i<=nThreads; i+=2)
-        outfile << "T_PAR" << i << ";SPEEDUP" << i << ";";
-    outfile << "\n";
-    outfile.close();
-}
-
-void exportResults(const std::string& filename, std::size_t test, double tSeq, const std::map<std::size_t, double>& tPars,
-                   std::map<std::size_t,double> speedUps){
-    std::ofstream outfile;
-    outfile.open(filename, std::ios::out | std::ios::app);
-    if(outfile.is_open()){
-        outfile << std::fixed << std::setprecision(3);
-        outfile << test << ";" << tSeq << ";";
-        for(auto tPar: tPars)
-            outfile << tPar.second << ";" << speedUps[tPar.first] << ";";
-        outfile << "\n";
-    }
-    outfile.close();
-}
-
-
-int main() {
-#ifdef _OPENMP
-    printf("**OPENMP :: Number of cores/threads: %d**\n", omp_get_num_procs());
-    omp_set_dynamic(0);
-#endif
+void testParallelization(const std::vector<std::size_t>& testPlanes){
     headerResults(RESULT_PATH, omp_get_num_procs());
-    std::vector<std::size_t> testPlanes;
-    for (std::size_t i = MIN_TEST; i <= MAX_TESTS; i += SPACE)
-        testPlanes.push_back(i);
-
     for (auto test: testPlanes) {
         // GENERATION OF CIRCLES
-        auto circles = generateCircles(test * N_CIRCLES, WIDTH, HEIGHT, MIN_RADIUS, MAX_RADIUS);
-        auto planes = generatePlanes(test, circles, N_CIRCLES);
+        auto circles = parallelGenerateCircles(test * N_CIRCLES, WIDTH, HEIGHT, MIN_RADIUS, MAX_RADIUS);
+        auto planes = parallelGeneratePlanes(test, circles, N_CIRCLES);
 
         printf("\nTEST PLANES: %llu\n", test);
 
@@ -50,7 +17,7 @@ int main() {
         double tSeq = sequentialRenderer(planes, test);
         printf("SEQUENTIAL Time: %f\n", tSeq);
 
-        // TEST PARALLEL
+        // TEST OPENMP
         std::map<std::size_t, double> tPars;
         std::map<std::size_t, double> speedUps;
         for (int i=2; i<=omp_get_num_procs(); i+=2) {
@@ -76,5 +43,65 @@ int main() {
         delete[] circles;
         delete[] planes;
     }
+}
+
+void testCircles(const std::vector<std::size_t>& testPlanes, const std::vector<std::size_t>& testCircles){
+    headerResultsCircle(RESULT_CIRCLES_PATH);
+    printf("\nTEST CIRCLES\n");
+    for (auto testP: testPlanes) {
+        printf("TEST PLANES: %llu\n", testP);
+
+        for (auto testC : testCircles) {
+            // GENERATION OF CIRCLES
+            double start = omp_get_wtime();
+            auto circles = sequentialGenerateCircles(testP * testC, WIDTH, HEIGHT, MIN_RADIUS, MAX_RADIUS);
+            auto planes = sequentialGeneratePlanes(testP, circles, testC);
+            double seqTime = omp_get_wtime() - start;
+            printf("Sequential Time: %f\n", seqTime);
+
+            // DELETE ARRAY DYNAMIC ALLOCATED
+            delete[] circles;
+            delete[] planes;
+
+            // GENERATION OF CIRCLES
+            start = omp_get_wtime();
+            circles = parallelGenerateCircles(testP * testC, WIDTH, HEIGHT, MIN_RADIUS, MAX_RADIUS);
+            planes = parallelGeneratePlanes(testP, circles, testC);
+            double parTime = omp_get_wtime() - start;
+            printf("Parallel Time: %f\n", parTime);
+
+            // DELETE ARRAY DYNAMIC ALLOCATED
+            delete[] circles;
+            delete[] planes;
+
+            // WRITE RESULTS TO CSV FILE
+            exportResultsCircle(RESULT_CIRCLES_PATH, testP, testC, seqTime, parTime, seqTime/parTime);
+        }
+
+    }
+}
+
+int main() {
+#ifdef _OPENMP
+    printf("**OPENMP :: Number of cores/threads: %d**\n", omp_get_num_procs());
+    omp_set_dynamic(0);
+#endif
+
+    // TEST PARALLELIZATION
+    /*
+    std::vector<std::size_t> testPlanes;
+    for (std::size_t i = MIN_TEST; i <= MAX_TESTS; i += SPACE)
+        testPlanes.push_back(i);
+    testParallelization(testPlanes);
+    */
+
+    // n = 50, 500
+    // N = 100, 1000, 10000
+    // D = 256x256, 512x512, 1024x1024
+    std::vector<std::size_t> testPlanesCircles {100, 1000, 10000};
+    std::vector<std::size_t> testCirclesCircles {50, 500};
+    testCircles(testPlanesCircles, testCirclesCircles);
+
     return 0;
 }
+
